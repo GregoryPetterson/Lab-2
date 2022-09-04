@@ -3,19 +3,18 @@ import java.util.Arrays;
 class quicksort{
     public static void main(String[] args) {
         //Sets length of testing array
-        int testLength = 10;
+        int testLength = 10000;
         TestInteger[] testIntegersQ = new TestInteger[testLength];
         for(int x=0;x<testLength;x++)
             testIntegersQ[x] = new TestInteger((int)(Math.random() * 1000000));
         TestInteger[] testIntegersM = testIntegersQ.clone();
+        testIntegersM[0].resetCounter();
         Arrays.sort(testIntegersM);
+        System.out.println("Mergesort completed with " + testIntegersM[0].getCounter() + " comparisons.");
         quicksort q = new quicksort();
+        testIntegersQ[0].resetCounter();
         q.qsort(testIntegersQ, 0, testIntegersQ.length-1);
-        if(Arrays.equals(testIntegersM, testIntegersQ)) {
-            System.out.println("The array was properly sorted. The amount of comparisons was: " + testIntegersQ[0].getCounter());
-        }
-        else
-            System.out.println("The array was not properly sorted.");
+        System.out.println("Quicksort completed with "  + testIntegersQ[0].getCounter() + " comparisons.");
     }
 
     void qsort(TestInteger[] A, int low, int high){
@@ -49,7 +48,7 @@ class TestInteger implements Comparable<TestInteger>{
     public TestInteger(int v){
         this.value = v;
     }
-    private final int value;
+    public final int value;
     public static long counter;
     public int compareTo(TestInteger other){
         ++counter;
