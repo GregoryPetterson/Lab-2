@@ -4,13 +4,17 @@ class quicksort{
     public static void main(String[] args) {
         //Sets length of testing array
         int testLength = 10000;
+        //Creates test and populates array for quicksort
         TestInteger[] testIntegersQ = new TestInteger[testLength];
         for(int x=0;x<testLength;x++)
             testIntegersQ[x] = new TestInteger((int)(Math.random() * 1000000));
+        //Clones test array for mergesort
         TestInteger[] testIntegersM = testIntegersQ.clone();
         testIntegersM[0].resetCounter();
+        //Runs mergesort and prints number of comparisons
         Arrays.sort(testIntegersM);
         System.out.println("Mergesort completed with " + testIntegersM[0].getCounter() + " comparisons.");
+        //Runs quicksort and prints number of comparisons
         quicksort q = new quicksort();
         testIntegersQ[0].resetCounter();
         q.qsort(testIntegersQ, 0, testIntegersQ.length-1);
@@ -48,7 +52,7 @@ class TestInteger implements Comparable<TestInteger>{
     public TestInteger(int v){
         this.value = v;
     }
-    public final int value;
+    private final int value;
     public static long counter;
     public int compareTo(TestInteger other){
         ++counter;
