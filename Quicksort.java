@@ -1,6 +1,6 @@
 import java.util.Arrays;
 
-class quicksort{
+class Quicksort{
     public static void main(String[] args) {
         //Sets length of testing array
         int testLength = 10000;
@@ -15,17 +15,17 @@ class quicksort{
         Arrays.sort(testIntegersM);
         System.out.println("Mergesort completed with " + testIntegersM[0].getCounter() + " comparisons.");
         //Runs quicksort and prints number of comparisons
-        quicksort q = new quicksort();
+        Quicksort q = new Quicksort();
         testIntegersQ[0].resetCounter();
-        q.qsort(testIntegersQ, 0, testIntegersQ.length-1);
+        q.quickSort(testIntegersQ, 0, testIntegersQ.length-1);
         System.out.println("Quicksort completed with "  + testIntegersQ[0].getCounter() + " comparisons.");
     }
 
-    void qsort(TestInteger[] A, int low, int high){
+    void quickSort(TestInteger[] A, int low, int high){
         if(low<high){
-            int p = partition(A, low, high);
-            qsort(A, low, p-1);
-            qsort(A, p+1, high);
+            int partition = partition(A, low, high);
+            quickSort(A, low, partition-1);
+            quickSort(A, partition+1, high);
         }
     }
 
@@ -46,6 +46,26 @@ class quicksort{
         A[high] = temp;
         return i+1;
     }
+
+    void randomizedQuicksort(TestInteger[] A, int low, int high){
+        if (low<high){
+            int partition = randomizedPartition(A, low, high);
+        }
+
+    }
+    int randomizedPartition(TestInteger[] A, int low, int high){
+        return 0;
+    }
+
+    void medianQuicksort(TestInteger A, int low, int high){
+
+    }
+
+    void switchAtEndQuicksort(TestInteger A, int low, int high){
+
+    }
+
+
 }
 
 class TestInteger implements Comparable<TestInteger>{
