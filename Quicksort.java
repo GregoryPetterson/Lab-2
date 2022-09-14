@@ -3,6 +3,7 @@ import java.util.Random;
 
 class Quicksort{
     public static void main(String[] args) {
+        Quicksort q = new Quicksort();
         //Sets length of testing array
         int testLength = 1000;
         //Creates test and populates array for quicksort
@@ -11,22 +12,24 @@ class Quicksort{
             testIntegersQ[x] = new TestInteger((int)(Math.random() * 1000000));
         //Clones test array for mergesort
         TestInteger[] testIntegersM = testIntegersQ.clone();
-        testIntegersM[0].resetCounter();
         TestInteger[] testIntegersR = testIntegersQ.clone();
         TestInteger[] testIntegersT = testIntegersQ.clone();
-        //Runs mergesort and prints number of comparisons
+        //Runs mergesort
+        testIntegersM[0].resetCounter();
         Arrays.sort(testIntegersM);
         System.out.println("Mergesort completed with " + testIntegersM[0].getCounter() + " comparisons.");
-        //Runs quicksort and prints number of comparisons
-        Quicksort q = new Quicksort();
+        //Runs quicksort
         testIntegersQ[0].resetCounter();
         q.quickSort(testIntegersQ, 0, testIntegersQ.length-1);
         System.out.println("Quicksort completed with "  + testIntegersQ[0].getCounter() + " comparisons.");
-        //Runs random quicksort and prints number of comparisons
+        //Runs random quicksort
         testIntegersR[0].resetCounter();
         q.randomizedQuicksort(testIntegersR, 0, testIntegersR.length-1);
         System.out.println("Randomized quicksort completed with "  + testIntegersR[0].getCounter() + " comparisons.");
+        //Runs median-of-three quicksort
         testIntegersT[0].resetCounter();
+        q.medianQuicksort(testIntegersT, 0, testIntegersT.length-1);
+        System.out.println("Median quicksort completed with "  + testIntegersT[0].getCounter() + " comparisons.");
     }
 
     void quickSort(TestInteger[] A, int low, int high){
@@ -115,7 +118,6 @@ class Quicksort{
     }
     TestInteger medianPivot(TestInteger[] A, int left, int right) {
         int center = (left + right) / 2;
-
         if (A[left].compareTo(A[center]) != 1) {
             TestInteger temp = A[left];
             A[left] = A[center];
@@ -132,11 +134,10 @@ class Quicksort{
             A[right] = temp;
         }
         TestInteger temp = A[center];
-        A[center] = A[right-1];
-        A[right-1] = temp;
-        return A[right - 1];
+        A[center] = A[right];
+        A[right] = temp;
+        return A[right];
     }
-
 
     void switchAtEndQuicksort(TestInteger A, int low, int high){
 
