@@ -1,6 +1,8 @@
 import java.util.Arrays;
 import java.util.Random;
 
+//Authored by Luke Burdette and Gregory Petterson
+
 class Quicksort{
     public static void main(String[] args) {
         Quicksort q = new Quicksort();
