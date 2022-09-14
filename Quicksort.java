@@ -14,6 +14,7 @@ class Quicksort{
         TestInteger[] testIntegersM = testIntegersQ.clone();
         TestInteger[] testIntegersR = testIntegersQ.clone();
         TestInteger[] testIntegersT = testIntegersQ.clone();
+        TestInteger[] testIntegersI = testIntegersQ.clone();
         //Runs mergesort
         testIntegersM[0].resetCounter();
         Arrays.sort(testIntegersM);
@@ -30,6 +31,11 @@ class Quicksort{
         testIntegersT[0].resetCounter();
         q.medianQuicksort(testIntegersT, 0, testIntegersT.length-1);
         System.out.println("Median quicksort completed with "  + testIntegersT[0].getCounter() + " comparisons.");
+        //Runs insertion sort at end
+        testIntegersI[0].resetCounter();
+        q.insertionQuicksort(testIntegersI,0,testIntegersT.length-1);
+        q.switchAtEndQuicksort(testIntegersI);
+        System.out.println("Insertion quicksort completed with "  + testIntegersI[0].getCounter() + " comparisons.");
     }
 
     void quickSort(TestInteger[] A, int low, int high){
@@ -45,7 +51,7 @@ class Quicksort{
         TestInteger pivot = A[high];
         int i = low-1;
         for(int j = low; j < high; j++){
-            if(A[j].compareTo(pivot) != 1){
+            if(A[j].compareTo(pivot) > 0){
                 i++;
                 temp = A[i];
                 A[i] = A[j];
@@ -79,7 +85,7 @@ class Quicksort{
         int i = (low-1);
         for (int j = low; j < high; j++)
         {
-            if(A[j].compareTo(pivot) != 1){
+            if(A[j].compareTo(pivot) > 0){
                 i++;
                 temp = A[i];
                 A[i] = A[j];
@@ -101,10 +107,11 @@ class Quicksort{
     }
     int medianPartition(TestInteger[] A, int low, int high){
         TestInteger temp;
-        TestInteger pivot = medianPivot(A,high,low);
+        TestInteger[] B = A.clone();
+        TestInteger pivot = medianPivot(B,high,low);
         int i = low-1;
         for(int j = low; j < high; j++){
-            if(A[j].compareTo(pivot) != 1){
+            if(A[j].compareTo(pivot) > 0){
                 i++;
                 temp = A[i];
                 A[i] = A[j];
@@ -116,31 +123,51 @@ class Quicksort{
         A[high] = temp;
         return i+1;
     }
-    TestInteger medianPivot(TestInteger[] A, int left, int right) {
+    TestInteger medianPivot(TestInteger[] B, int left, int right) {
         int center = (left + right) / 2;
-        if (A[left].compareTo(A[center]) != 1) {
-            TestInteger temp = A[left];
-            A[left] = A[center];
-            A[center] = temp;
+        if (B[left].compareTo(B[center]) > 0) {
+            TestInteger temp = B[left];
+            B[left] = B[center];
+            B[center] = temp;
         }
-        if (A[left].compareTo(A[right]) != 1){
-            TestInteger temp = A[left];
-            A[left] = A[right];
-            A[right] = temp;
+        if (B[left].compareTo(B[right]) > 0){
+            TestInteger temp = B[left];
+            B[left] = B[right];
+            B[right] = temp;
         }
-        if (A[center].compareTo(A[right]) != 1){
-            TestInteger temp = A[center];
-            A[center] = A[right];
-            A[right] = temp;
+        if (B[center].compareTo(B[right]) > 0){
+            TestInteger temp = B[center];
+            B[center] = B[right];
+            B[right] = temp;
         }
-        TestInteger temp = A[center];
-        A[center] = A[right];
-        A[right] = temp;
-        return A[right];
+        TestInteger temp = B[center];
+        B[center] = B[right];
+        B[right] = temp;
+        return B[right];
     }
 
-    void switchAtEndQuicksort(TestInteger A, int low, int high){
+    void insertionQuicksort(TestInteger[] A, int low, int high){
+        if(low<high*.85){
+            int partition = partition(A, low, high);
+            quickSort(A, low, partition-1);
+            quickSort(A, partition+1, high);
+        }
+    }
+    void switchAtEndQuicksort(TestInteger[] A){
+        int n = A.length;
+        for (int i = 1; i < n; ++i) {
+            TestInteger key = A[i];
+            int j = i - 1;
 
+            /* Move elements of arr[0..i-1], that are
+               greater than key, to one position ahead
+               of their current position */
+            while (j >= 0 && A[j].compareTo(key) < 0) {
+                A[j + 1] = A[j];
+                j = j - 1;
+            }
+            A[j + 1] = key;
+        }
     }
 
 
@@ -150,7 +177,7 @@ class TestInteger implements Comparable<TestInteger>{
     public TestInteger(int v){
         this.value = v;
     }
-    private final int value;
+    public final int value;
     public static long counter;
     public int compareTo(TestInteger other){
         ++counter;
